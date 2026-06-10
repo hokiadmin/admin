@@ -1,46 +1,803 @@
-<!doctype html><html lang="id"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><title>CAKRA RAMADHAN</title><style>:root{--bg1:#f00b0bd3;--bg2:#f00b0bd3;--bg3:#f00b0bd3;--card:rgba(19, 2, 2, 0.164);--stroke:rgba(255, 255, 255, 0.982);--gold1:#fafafa;--gold2:#B8860B}*{box-sizing:border-box}body{
-  margin:0;
-  font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
-  color:#fff;
-  min-height:100vh;
-  /* BACKGROUND GAMBAR */
-  background-image: url("https://i.imgur.com/rKu7NGT.jpeg");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  /* biar teks & card tetap kebaca walau bg rame */
-  position: relative;
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CAKRA BOLA - PIALA DUNIA 2026</title>
+  <meta name="description" content="Promo Bonus 30% untuk semua member dari CAKRABOLA. Klaim sekarang dan nikmati bonus spesial premium." />
+  <style>
+    :root {
+      --bg-dark: #0a0f24;
+      --bg-card: rgba(16, 24, 48, 0.85);
+      --neon-cyan: #f5f5f5;
+      --neon-gold: #079499;
+      --neon-green: #39ff14;
+      --text-light: #ffffff;
+      --text-muted: #8a99ad;
+      --border-glow: rgba(0, 240, 255, 0.2);
+      --radius: 16px;
+      --shadow: 0 0 30px rgba(0, 240, 255, 0.15);
+    }
+
+    * { box-sizing: border-box; font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
+    html, body { margin: 0; padding: 0; background-color: var(--bg-dark); color: var(--text-light); }
+    html { scroll-behavior: smooth; }
+    
+    body {
+      background: 
+        radial-gradient(circle at 10% 20%, rgba(0, 240, 255, 0.05) 0%, transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(255, 184, 0, 0.05) 0%, transparent 40%),
+        linear-gradient(rgba(10, 15, 36, 0.9), rgba(6, 9, 22, 0.95)),
+        url('https://i.imgur.com/tPv3NvZ.jpeg') center/cover no-repeat fixed;
+    }
+
+    /* Lapangan Garis Estetik */
+    .stadium-lines {
+      position: fixed; inset: 0; pointer-events: none; z-index: 0; opacity: 0.03;
+      background-image: 
+        radial-gradient(circle at 50% 50%, transparent 0, transparent 200px, #fff 201px, transparent 202px),
+        linear-gradient(to right, transparent 49%, #fff 50%, transparent 51%);
+    }
+
+    .container { position: relative; z-index: 1; width: min(1200px, calc(100% - 32px)); margin: 0 auto; }
+
+    /* Navbar */
+    .topbar {
+      position: sticky; top: 0; z-index: 30;
+      backdrop-filter: blur(20px);
+      background: rgba(10, 15, 36, 0.75);
+      border-bottom: 2px solid rgba(0, 240, 255, 0.15);
+    }
+    .topbar-inner { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 16px 0; }
+    .brand { display: flex; align-items: center; gap: 14px; }
+    .brand-logo {
+      width: 46px; height: 46px; border-radius: 12px; object-fit: cover;
+      border: 2px solid var(--neon-cyan);
+      box-shadow: 0 0 15px var(--border-glow);
+    }
+    .brand-name { font-size: 20px; font-weight: 800; letter-spacing: 1px; color: var(--text-light); }
+    .brand small { display: block; color: var(--neon-gold); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; margin-top: 2px; }
+
+    .nav-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+    
+    /* Tombol-Tombol */
+    .btn {
+      appearance: none; border: 0; cursor: pointer; text-decoration: none;
+      padding: 12px 24px; border-radius: 8px; font-weight: 700; font-size: 14px;
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      transition: all 0.3s ease; text-transform: uppercase; letter-spacing: 0.5px;
+    }
+    .btn-primary {
+      color: #000; background: linear-gradient(90deg, var(--neon-cyan), #00a8ff);
+      box-shadow: 0 0 20px rgba(0, 240, 255, 0.4);
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 30px rgba(0, 240, 255, 0.6); }
+    .btn-soft {
+      color: #fff; background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .btn-soft:hover { background: rgba(255, 255, 255, 0.15); border-color: var(--neon-cyan); }
+    .btn-full { width: 100%; }
+
+    /* Hero Section */
+    .hero { padding: 60px 0 40px; display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 32px; align-items: center; }
+    
+    .hero-card, .card, .offer-card, .cta-box, .modal-box, .klasemen-box {
+      background: var(--bg-card);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-top: 3px solid var(--neon-cyan);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 32px;
+    }
+
+    .eyebrow {
+      display: inline-flex; gap: 6px; align-items: center; padding: 6px 16px; border-radius: 30px;
+      color: var(--neon-gold); font-size: 12px; font-weight: 800; margin-bottom: 24px;
+      background: rgba(255, 184, 0, 0.1); border: 1px solid rgba(255, 184, 0, 0.2);
+      text-transform: uppercase; letter-spacing: 1px;
+    }
+
+    h1 { margin: 0; font-size: clamp(36px, 5vw, 64px); line-height: 1.1; font-weight: 900; letter-spacing: -0.5px; }
+    .brand-gradient { color: var(--text-light); }
+    .gold-text {
+      background: linear-gradient(135deg, var(--neon-gold), #fff);
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+      display: block; margin-top: 8px;
+    }
+
+    .lead { margin: 24px 0; color: var(--text-muted); font-size: 16px; line-height: 1.6; }
+    .hero-cta { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 24px; }
+    .mini-note { font-size: 12px; color: var(--text-muted); border-left: 2px solid var(--neon-gold); padding-left: 10px; }
+
+    /* Poin Fitur */
+    .promo-points { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 32px; }
+    .point { padding: 16px; border-radius: 8px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); }
+    .point strong { display: block; font-size: 15px; margin-bottom: 6px; color: var(--neon-cyan); }
+    .point span { color: var(--text-muted); font-size: 13px; line-height: 1.4; }
+
+    /* Visual & Timer */
+    .visual {
+      border-top: 3px solid var(--neon-gold);
+      display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;
+      position: relative; overflow: hidden;
+    }
+    .ribbon {
+      background: var(--neon-gold); color: #000; font-weight: 800; font-size: 12px;
+      padding: 6px 16px; border-radius: 4px; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 16px;
+    }
+    .big-title { font-size: clamp(40px, 4vw, 56px); font-weight: 900; line-height: 1; margin: 10px 0; }
+    .subbox { font-size: 14px; color: var(--neon-cyan); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 20px; }
+    
+    .countdown { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; width: 100%; margin-top: 10px; }
+    .timebox { padding: 12px 8px; border-radius: 8px; background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(255,255,255,0.05); }
+    .timebox .num { display: block; font-size: 28px; font-weight: 800; color: var(--text-light); }
+    .timebox .lbl { display: block; font-size: 10px; color: var(--text-muted); margin-top: 4px; text-transform: uppercase; }
+
+    /* Bagian Konten Tambahan */
+    .sections { padding: 40px 0 80px; }
+    .section-title { text-align: center; margin: 0 0 12px; font-size: 32px; font-weight: 800; }
+    .section-sub { text-align: center; color: var(--text-muted); max-width: 700px; margin: 0 auto 40px; line-height: 1.6; }
+    
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .card { border-top: 3px solid rgba(255,255,255,0.2); }
+    .card h3 { margin: 0 0 12px; font-size: 20px; color: var(--text-light); }
+    .card p { margin: 0; color: var(--text-muted); font-size: 14px; line-height: 1.6; }
+    .icon { font-size: 32px; margin-bottom: 16px; display: inline-block; }
+
+    .offer-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px; }
+    .offer-card { border-top: 3px solid var(--neon-cyan); }
+    .offer-card .tag {
+      display: inline-block; padding: 4px 10px; border-radius: 4px; font-size: 11px; font-weight: 800; margin-bottom: 16px;
+      color: #000; background: var(--neon-cyan); text-transform: uppercase;
+    }
+    .offer-card h4 { margin: 0 0 16px; font-size: 24px; }
+    .offer-card ul { margin: 0; padding-left: 20px; color: var(--text-muted); line-height: 1.8; font-size: 15px; }
+
+    /* Klasemen Grid Khusus (2 Kolom di Desktop, 1 Kolom di Mobile) */
+    .klasemen-box { border-top: 3px solid var(--neon-cyan); margin-top: 40px; }
+    .group-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; margin-top: 24px; }
+    .group-table-wrapper { background: rgba(0, 0, 0, 0.2); border-radius: 8px; padding: 16px; border: 1px solid rgba(255, 255, 255, 0.05); overflow-x: auto; }
+    .group-title { font-size: 18px; font-weight: 800; color: var(--neon-cyan); margin-top: 0; margin-bottom: 12px; border-bottom: 1px solid rgba(0, 240, 255, 0.2); padding-bottom: 6px; text-transform: uppercase; }
+    
+    /* Style Dasar Tabel Universal */
+    table { width: 100%; border-collapse: collapse; }
+    th, td { padding: 14px; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.05); }
+    th { font-size: 12px; text-transform: uppercase; color: var(--text-muted); letter-spacing: 1px; }
+    td { font-size: 14px; }
+    
+    /* Penyesuaian Khusus Tabel Klasemen */
+    .table-klasemen th, .table-klasemen td { padding: 10px 8px; text-align: center; }
+    .table-klasemen th.align-left, .table-klasemen td.align-left { text-align: left; }
+    .table-klasemen tbody tr:hover { background: rgba(255, 255, 255, 0.03); }
+    .flag-icon { width: 20px; height: 14px; object-fit: cover; vertical-align: middle; margin-right: 6px; border: 1px solid rgba(255,255,255,0.2); }
+    
+    /* Indikator Zona Lolos Babak Grup (Hijau Neon) */
+    .row-qualify td:first-child { border-left: 3px solid var(--neon-green); font-weight: bold; color: var(--neon-green); }
+
+    /* Langkah-langkah */
+    .steps { margin-top: 24px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+    .step { padding: 20px; border-radius: var(--radius); background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); }
+    .step .n {
+      width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center; font-weight: 800; margin-bottom: 16px;
+      color: #000; background: var(--neon-gold); font-size: 14px;
+    }
+    .step strong { display: block; margin-bottom: 8px; font-size: 16px; }
+    .step span { color: var(--text-muted); font-size: 13px; line-height: 1.5; }
+
+    /* Tabel Live Aktivitas */
+    .winner-board { margin-top: 32px; border-top: 3px solid var(--neon-green); }
+    .winner-board h3 { margin-top: 0; }
+    .pill {
+      display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 700;
+      background: rgba(57, 255, 20, 0.1); color: var(--neon-green); border: 1px solid rgba(57, 255, 20, 0.2);
+    }
+
+    /* Kotak CTA Bawah */
+    .cta-box {
+      margin-top: 40px; text-align: center; border-top: 3px solid var(--neon-gold);
+      background: linear-gradient(180deg, rgba(255, 184, 0, 0.03), transparent);
+    }
+    .cta-box h3 { font-size: 28px; margin: 0 0 12px; }
+    .cta-box p { margin: 0 auto 24px; max-width: 600px; color: var(--text-muted); }
+
+    /* Footer */
+    .footer { padding: 40px 0; text-align: center; color: var(--text-muted); font-size: 13px; border-top: 1px solid rgba(255,255,255,0.05); }
+
+    /* Modal Pop-up */
+    .modal {
+      position: fixed; inset: 0; z-index: 60; display: none; align-items: center; justify-content: center;
+      background: rgba(5, 7, 18, 0.85); backdrop-filter: blur(10px); padding: 16px;
+    }
+    .modal.show { display: flex; }
+    .modal-box { width: min(480px, 100%); border-top: 4px solid var(--neon-cyan); }
+    .modal-box h3 { margin: 0 0 12px; font-size: 24px; text-align: center; }
+    .modal-box p { margin: 0 0 20px; text-align: center; color: var(--text-muted); font-size: 14px; }
+    .field { margin-bottom: 16px; }
+    .input {
+      width: 100%; padding: 14px 16px; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(0, 0, 0, 0.4); color: #fff; outline: none; font-size: 15px; transition: border 0.3s;
+    }
+    .input:focus { border-color: var(--neon-cyan); }
+    .status { min-height: 24px; font-size: 13px; margin: 8px 0; text-align: center; }
+    .status.ok { color: var(--neon-green); }
+    .status.err { color: #ff4d4d; }
+    .modal-actions { display: flex; gap: 12px; margin-top: 20px; }
+
+    /* Responsive Breakpoints */
+    @media (max-width: 980px) {
+      .hero, .offer-wrap, .grid-3, .group-grid { grid-template-columns: 1fr; }
+      .steps { grid-template-columns: 1fr 1fr; }
+      .hero-card { order: 2; }
+      .visual { order: 1; }
+    }
+    @media (max-width: 640px) {
+      .topbar-inner { padding: 12px 0; }
+      .hero { padding-top: 30px; }
+      .promo-points, .countdown, .steps { grid-template-columns: 1fr; }
+      .nav-actions, .hero-cta, .modal-actions { flex-direction: column; }
+      .btn { width: 100%; }
+    }
+    .sidebar-banner{
+  position:fixed;
+  right:5px;
+  top:120px;
+  z-index:999;
+  display:flex;
+  flex-direction:column;
+  gap:5px;
 }
-/* overlay gelap tipis (opsional tapi recommended) */
-body::before{
-  content:"";
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,.2);
-  z-index: -2;
-  pointer-events: none;
+
+.sidebar-banner img,
+.sidebar-banner video{
+  width:100px;
+  height:100px;
+  object-fit:cover;
+  border:2px solid #c89b3c;
+  display:block;
 }
-/* ini supaya petir (fx) tetap di atas overlay */
-.fx{ z-index: -1; }.fx{position:fixed;inset:0;pointer-events:none;z-index:-1}.fx .flash{position:absolute;inset:0;background:#fff;opacity:0}#lightningCanvas{width:100%;height:100%;display:block}.container{max-width:1100px;margin:0 auto;padding:18px}header{text-align:center;padding:10px 10px 18px}.logo{width:300px;max-width:52vw;height:auto;display:block;margin:0 auto;filter:drop-shadow(0 10px 22px rgba(0,0,0,.55))}@media(max-width:480px){.logo{width:80vw}}.grid{display:grid;grid-template-columns:380px 1fr;gap:22px;align-items:start;margin-top:10px}@media(max-width:900px){.grid{grid-template-columns:1fr}}.wheel-wrap{width:min(360px,92vw);aspect-ratio:1/1;margin:0 auto;position:relative}.pointer{position:absolute;top:-18px;left:50%;transform:translateX(-50%);width:48px;height:58px;z-index:5}.outer{width:100%;height:100%;border-radius:50%;padding:14px;background:url("https://i.imgur.com/rKu7NGT.jpeg") center/cover no-repeat fixed;border:4px solid #000;box-shadow:0 0 50px rgba(0,0,0,.55)}.wheel{width:100%;height:100%;border-radius:50%;border:4px solid #000;position:relative;background:conic-gradient(#0c5980d3 0deg 60deg,#000000e1 60deg 120deg,#0c5980d3 120deg 180deg,#000000e1 180deg 240deg,#0c5980d3 240deg 300deg,#000000e1 300deg 360deg);transform:rotate(0deg)}.wheel.spinning{animation:spin 6s cubic-bezier(.15,0,.15,1) forwards}@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(var(--rot))}}.center{position:absolute;inset:0;display:grid;place-items:center;pointer-events:none}.center>div{width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,var(--gold1),var(--gold2));border:4px solid rgba(0,0,0,.65);position:relative;box-shadow:0 10px 18px rgba(0,0,0,.45)}.center>div:after{content:"";position:absolute;inset:12px;border-radius:50%;background:#eaeaea}.prize{
-  position:absolute;
-  font-weight:900;
-  font-size:20px;
-  transform:translate(-50%,-50%);
-  user-select:none;
-  white-space:nowrap;
-  color:#fefffc;   /* warna hadiah */
-  text-shadow:0 0 10px rgb(10, 0, 0);
-}.card{background:var(--card);border:1px solid var(--stroke);border-radius:16px;padding:16px;backdrop-filter:blur(6px)}h2{margin:0 0 10px;font-size:18px}.hint{opacity:.85;font-size:13px;margin-bottom:12px}input{width:100%;height:52px;border-radius:12px;border:1px solid rgba(255,255,255,.2);background:rgba(58, 53, 53, 0.445);color:#00ff00;text-align:center;font-size:16px;outline:none;margin-bottom:10px}input::placeholder{
-  color:#e0e9e8;opacity:1;}button{width:100%;height:56px;border:0;border-radius:12px;cursor:pointer;font-weight:900;letter-spacing:.6px;background:#fff;color:#000}button:disabled{opacity:.55;cursor:not-allowed}.table{margin-top:14px;border-radius:14px;overflow:hidden;border:1px solid rgba(255,255,255,.12);background:rgba(0,0,0,.22)}.thead,.trow{display:grid;grid-template-columns:54px 1fr 120px;gap:10px;padding:10px 12px;align-items:center}.thead{position:sticky;top:0;background:rgba(0,0,0,.55);font-weight:900;color:var(--gold1)}.tbody{max-height:260px;overflow:auto}.prize-amt{text-align:right;font-weight:900;color:#ffee05}.modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.78);z-index:1000;padding:18px}.modal.show{display:flex}.modal-box{width:min(520px,96vw);background:rgba(10,10,20,.95);border:1px solid rgba(255,215,0,.35);border-radius:18px;padding:22px;text-align:center}.big{font-size:38px;font-weight:900;color:var(--gold1);margin:10px 0 4px}.modal-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:14px}.btn-ghost{background:rgba(255,255,255,.12);color:#fff;max-width:200px}.license{position:fixed;left:12px;right:12px;bottom:12px;display:flex;flex-direction:column;align-items:center;gap:8px;font-size:12px;opacity:.95;text-shadow:0 2px 6px rgba(0,0,0,.6);pointer-events:none}.license .logos{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;pointer-events:auto}.license img{height:22px;width:auto;opacity:.92}</style></head><body><div class="container"><header><img class="logo" src="https://images.linkcdn.cloud/V2/232/logo/logo-1488405376.webp"></header><div class="grid"><section><div class="wheel-wrap"><div class="pointer"><svg viewBox="0 0 48 64"><path d="M24 60L4 20C4 20 8 4 24 4C40 4 44 20 44 20L24 60Z" fill="#FFD700" stroke="#B8860B" stroke-width="2"/><circle cx="24" cy="16" r="8" fill="#FFF" stroke="#B8860B" stroke-width="2"/></svg></div><div class="outer"><div class="wheel" id="wheel"><div class="center"><div></div></div></div></div></div></section><section class="card"><h2></h2><div class="hint">User ID hanya bisa claim 1x, tiket hanya 1x pakai.</div><input id="userIdInput" placeholder="MASUKKAN USER ID"><input id="ticketInput" placeholder="MASUKKAN KODE RAMADHAN"><button id="spinBtn" disabled onclick="startSpin()">MASUKKAN USER ID & TIKET</button><div class="table"><div class="thead"><div>NO</div><div>USER ID</div><div style="text-align:right">HADIAH</div></div><div class="tbody" id="winnersBody"></div></div></section></div></div><div class="modal" id="prizeModal"><div class="modal-box"><h2>SELAMAT!</h2><div style="opacity:.85">SCREENSHOT HADIAH KAMU!</div><div class="big" id="prizeAmount">IDR 1.000</div><div class="modal-actions"><button onclick="claimPrize()">KLAIM SEKARANG</button><button class="btn-ghost" onclick="closeModal()">TUTUP</button></div></div></div><script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.0/dist/confetti.browser.min.js"></script><script>const TICKET_API="https://orange-disk-1954taruna-ticket.mahikaleverin21.workers.dev/",PRIZES=["750K","10K","1.5JT","800K","5K","7K"],AMOUNTS=["750.000","10.000","1.500.000","800.000","5.000","0"];function pickPrizeIndex(){let r=Math.random()*100;return r<60?0:r<90?2:3}let spinning=!1,currentRot=0,winners=[];const $=e=>document.getElementById(e),normalize=e=>(e||"").toString().trim().toUpperCase();function setBtn(){let e=$("userIdInput").value.trim().length>0,t=normalize($("ticketInput").value).length>0,n=e&&t&&!spinning,r=$("spinBtn");r.disabled=!n,r.textContent=spinning?"SPINNING...":n?"SPIN SEKARANG!":"MASUKKAN USER ID & TIKET"}function drawLabels(){let e=$("wheel");e.querySelectorAll(".prize").forEach(e=>e.remove());let t=360/PRIZES.length;PRIZES.forEach((n,r)=>{let o=r*t+t/2,i=108,l=Math.cos((o-90)*Math.PI/180)*i,a=Math.sin((o-90)*Math.PI/180)*i,d=document.createElement("div");d.className="prize",d.textContent=n,d.style.left=`calc(50% + ${l}px)`,d.style.top=`calc(50% + ${a}px)`,e.appendChild(d)})}function renderWinners(){let e=$("winnersBody");e.innerHTML="",winners.forEach((t,n)=>{let r=document.createElement("div");r.className="trow",r.innerHTML=`<div>${n+1}</div><div style="font-weight:700">${t.user}</div><div class="prize-amt">IDR ${t.amount}</div>`,e.appendChild(r)})}function mockWinners(){let e=[];for(let t=0;t<50;t++)e.push({user:`USER${Math.floor(9e3*Math.random()+1e3)}***`,amount:AMOUNTS[Math.floor(Math.random()*AMOUNTS.length)]});return e}function celebrate(){let e=Date.now()+1800;!function t(){confetti({particleCount:6,angle:60,spread:55,origin:{x:0}}),confetti({particleCount:6,angle:120,spread:55,origin:{x:1}}),Date.now()<e&&requestAnimationFrame(t)}()}function closeModal(){$("prizeModal").classList.remove("show")}function claimPrize(){location.href="https://static.zdassets.com/web_widget/latest/liveChat.html?v=10#key=palapatoto2.zendesk.com&settings=JTdCJTIyd2ViV2lkZ2V0JTIyJTNBJTdCJTIyY2hhdCUyMiUzQSU3QiUyMnRpdGxlJTIyJTNBbnVsbCUyQyUyMm1lbnVPcHRpb25zJTIyJTNBJTdCJTIyZW1haWxUcmFuc2NyaXB0JTIyJTNBdHJ1ZSU3RCUyQyUyMmRlcGFydG1lbnRzJTIyJTNBJTdCJTdEJTJDJTIycHJlY2hhdEZvcm0lMjIlM0ElN0IlMjJkZXBhcnRtZW50TGFiZWwlMjIlM0FudWxsJTJDJTIyZ3JlZXRpbmclMjIlM0FudWxsJTdEJTJDJTIyb2ZmbGluZUZvcm0lMjIlM0ElN0IlMjJncmVldGluZyUyMiUzQW51bGwlN0QlMkMlMjJjb25jaWVyZ2UlMjIlM0ElN0IlMjJhdmF0YXJQYXRoJTIyJTNBbnVsbCUyQyUyMm5hbWUlMjIlM0FudWxsJTJDJTIydGl0bGUlMjIlM0FudWxsJTdEJTdEJTJDJTIyY29sb3IlMjIlM0ElN0IlMjJhcnRpY2xlTGlua3MlMjIlM0ElMjIlMjIlMkMlMjJidXR0b24lMjIlM0ElMjIlMjIlMkMlMjJoZWFkZXIlMjIlM0ElMjIlMjIlMkMlMjJsYXVuY2hlciUyMiUzQSUyMiUyMiUyQyUyMmxhdW5jaGVyVGV4dCUyMiUzQSUyMiUyMiUyQyUyMnJlc3VsdExpc3RzJTIyJTNBJTIyJTIyJTJDJTIydGhlbWUlMjIlM0FudWxsJTdEJTdEJTdE&&locale=en-us&title=Web%20Widget%20Live%20Chat"}async function startSpin(){let e=$("userIdInput").value.trim(),t=normalize($("ticketInput").value);if(!e)return alert("Masukkan User ID dulu!");if(!t)return alert("Masukkan Kode Tiket dulu!");if(spinning)return;spinning=!0,setBtn();let n;try{let r=await fetch(TICKET_API,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({userId:e,ticket:t})});n=JSON.parse(await r.text())}catch{return spinning=!1,setBtn(),alert("Worker error")}if(!n?.ok)return spinning=!1,setBtn(),alert(n?.msg||"Tiket tidak valid");let r=pickPrizeIndex(),o=AMOUNTS[r],i=360/PRIZES.length,l=r*i+i/2,a=360-l,d=360*(8+Math.floor(4*Math.random()))+(Math.random()-.5)*i*.6,current=currentRot%360;currentRot+=360-current+d+a;let s=$("wheel");s.classList.add("spinning"),s.style.setProperty("--rot",currentRot+"deg"),setTimeout(()=>{s.classList.remove("spinning"),s.style.transform=`rotate(${currentRot}deg)`,$("prizeAmount").textContent="IDR "+o,$("prizeModal").classList.add("show"),winners.unshift({user:e,amount:o}),winners=winners.slice(0,50),renderWinners(),$("ticketInput").value="",celebrate(),spinning=!1,setBtn()},6e3)}document.addEventListener("DOMContentLoaded",()=>{winners=mockWinners(),drawLabels(),renderWinners(),$("userIdInput").addEventListener("input",setBtn),$("ticketInput").addEventListener("input",setBtn),setBtn()});(()=>{let e=document.getElementById("lightningCanvas"),t=e.getContext("2d"),n=document.querySelector(".flash");function r(){let r=window.devicePixelRatio||1;e.width=innerWidth*r,e.height=innerHeight*r,t.setTransform(r,0,0,r,0,0)}addEventListener("resize",r),r();let o=(e,t)=>Math.random()*(t-e)+e;!function i(){setTimeout(()=>{let r=innerWidth,i=innerHeight,l=o(.2*r,.8*r),a=0,d=[{x:l,y:a}];for(;a<i*o(.45,.85);)l+=o(-32,32),a+=o(18,44),d.push({x:l,y:a});t.clearRect(0,0,r,i),t.lineJoin="round",t.lineCap="round",t.strokeStyle="rgba(180,220,255,.32)",t.lineWidth=6,t.beginPath(),t.moveTo(d[0].x,d[0].y),d.slice(1).forEach(e=>t.lineTo(e.x,e.y)),t.stroke(),t.strokeStyle="rgba(255,255,255,.95)",t.lineWidth=2,t.beginPath(),t.moveTo(d[0].x,d[0].y),d.slice(1).forEach(e=>t.lineTo(e.x,e.y)),t.stroke(),n.style.transition="none",n.style.opacity=".5",requestAnimationFrame(()=>{n.style.transition="opacity 420ms ease",n.style.opacity="0"}),setTimeout(()=>t.clearRect(0,0,r,i),220),i()},o(1200,3500))}()})();</script>
+
+@media(max-width:768px){
+  .sidebar-banner{
+    display:none;
+  }
+}
+  </style>
+</head>
 <body>
-  </main>
-  <!-- License -->
-  <div class="license">
-    <div class="logos">
-      <img src="https://images.linkcdn.cloud/V2/232/logo/logo-1488405376.webp" alt="logo">
+  <div class="sidebar-banner">
+  <a href="https://rtpcakranew2.com/" target="_blank">
+  <img src="https://raw.githubusercontent.com/hokiadmin/gif/refs/heads/main/banner4.gif.gif"
+     width="100"
+     height="100"
+    alt="Banner 1">
+
+</a>
+</div>
+  <div class="stadium-lines"></div>
+
+  <div class="topbar">
+    <div class="container topbar-inner">
+      <div class="brand">
+        <img id="brandLogo" class="brand-logo" src="https://i.imgur.com/tPv3NvZ.jpeg" alt="Logo CAKRA BOLA">
+        <div>
+          <div class="brand-name" id="brandNameTop">CAKRA BOLA</div>
+          <small>Promo piala dunia</small>
+        </div>
+      </div>
+      <div class="nav-actions">
+        <a href="#promo" class="btn btn-soft">Lihat Promo</a>
+        <a href="#klasemen" class="btn btn-soft">Bagan Klasemen</a>
+        <a href="https://cakrabola12.info" id="liveChatTop" class="btn btn-soft" target="_blank" rel="noopener">Live Chat</a>
+        <a href="https://wa.me/6287875571212" id="whatsappTop" class="btn btn-soft" target="_blank" rel="noopener">WhatsApp</a>
+        <button class="btn btn-primary" id="openClaimTop">Klaim Sekarang</button>
+      </div>
     </div>
-    <div>© Copyright © Cakrabola 2014 - 2026. All Rights Reserved. | 18+ </div>
   </div>
+
+  <main class="container">
+    
+    <section class="hero">
+      <div class="hero-card">
+        <div class="eyebrow">🏆 Promo Eksklusif • New Member Only</div>
+        <h1><span class="brand-gradient" id="heroBrand">WELCOME</span><span class="gold-text">WORLD CUP 2026</span></h1>
+        <p class="lead">
+          Welcome to CAKRABOLA, Situs Betting Online TerPercaya Se-Asia, Nikmati Bonus Cashback & Rollingan Tertinggi.
+        </p>
+
+        <div class="hero-cta">
+          <button class="btn btn-primary" id="openClaimMain">KLAIM SEKARANG</button>
+          <a class="btn btn-soft" href="#langkah">LIHAT CARA CLAIM</a>
+          <a class="btn btn-soft" id="liveChatMain" href="https://cakrabola12.info" target="_blank" rel="noopener">LIVE CHAT</a>
+          <a class="btn btn-soft" id="whatsappMain" href="https://wa.me/6287875571212" target="_blank" rel="noopener">WHATSAPP</a>
+        </div>
+
+        <div class="mini-note">Platform Terpercaya • Transaksi Ter-Aman, Cepat & Mudah.</div>
+
+        <div class="promo-points">
+          <div class="point">
+            <strong>Bonus New Member</strong>
+            <span>Bonus New Member 100% langsung masuk setelah claim. Bisa langsung digunakan.</span>
+          </div>
+          <div class="point">
+            <strong>Keuntungan</strong>
+            <span>Bonus bisa di betting di semua permainan.</span>
+          </div>
+          <div class="point">
+            <strong>Cara klaim</strong>
+            <span>Klik klaim, klik klaim sekarang.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-card visual">
+        <div class="ribbon">WORLD CUP 2026</div>
+        <h2 class="big-title"><span class="brand-gradient">PROMO NEW MEMBER</span><br><span class="gold-text">100%</span></h2>
+        <div class="subbox">Deposit 100K + 100K</div>
+
+        <div class="countdown" aria-label="Timer promo">
+          <div class="timebox"><span class="num" id="days">00</span><span class="lbl">Hari</span></div>
+          <div class="timebox"><span class="num" id="hours">00</span><span class="lbl">Jam</span></div>
+          <div class="timebox"><span class="num" id="minutes">00</span><span class="lbl">Menit</span></div>
+          <div class="timebox"><span class="num" id="seconds">00</span><span class="lbl">Detik</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="klasemen-box" id="klasemen">
+      <h2 class="section-title">UPDATE KLASEMEN PIALA DUNIA 2026</h2>
+      <p class="section-sub">Pantau terus posisi tim jagoanmu di fase grup World Cup 2026. Tempat taruhan bola paling adil dan transparan. hanya di CAKRABOLA</p>
+      
+      <div class="group-grid">
+        
+        <div class="group-table-wrapper">
+          <h3 class="group-title">Grup A</h3>
+          <table class="table-klasemen">
+            <thead>
+              <tr><th>Pos</th><th class="align-left">Tim</th><th>M</th><th>S</th><th>K</th><th>SG</th><th>Pts</th></tr>
+            </thead>
+            <tbody>
+              <tr class="row-qualify"><td>1</td><td class="align-left"><img class="flag-icon" src="https://i.imgur.com/lrhKRdV.png"> Meksiko</td><td>0</td><td>0</td><td>0</td><td>0</td><td><strong>0</strong></td></tr>
+              <tr class="row-qualify"><td>2</td><td class="align-left"><img class="flag-icon" src="https://flagcdn.com/16x12/za.png"> Afrika Selatan</td><td>0</td><td>0</td><td>0</td><td>0</td><td><strong>0</strong></td></tr>
+              <tr><td>3</td><td class="align-left"><img class="flag-icon" src="https://flagcdn.com/16x12/kr.png"> Korea Selatan</td><td>0</td><td>0</td><td>0</td><td>0</td><td><strong>0</strong></td></tr>
+              <tr><td>4</td><td class="align-left"><img class="flag-icon" src="https://i.imgur.com/JfPAqJN.png"> Ceko</td><td>0</td><td>0</td><td>0</td><td>0</td><td><strong>0</strong></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="group-table-wrapper">
+          <h3 class="group-title">Grup B</h3>
+          <table class="table-klasemen">
+            <thead>
+              <tr><th>Pos</th><th class="align-left">Tim</th><th>M</th><th>S</th><th>K</th><th>SG</th><th>Pts</th></tr>
+            </thead>
+            <tbody>
+              <tr class="row-qualify"><td>1</td><td class="align-left"><img class="flag-icon" src="https://flagcdn.com/16x12/ca.png"> Kanada</td><td>0</td><td>0</td><td>0</td><td>0</td><td><strong>0</strong></td></tr>
+              <tr class="row-qualify"><td>2</td><td class="align-left"><img class="flag-icon" src="https://i.imgur.com/cHDNmrm.png"> Bosnia</td><td>0</td><td>0</td><td>0</td><td>0</td><td><strong>0</strong></td></tr>
+              <tr><td>3</td><td class="align-left"><img class="flag-icon" src="https://i.imgur.com/3YAmwG0.png"> Qatar</td><td>0</td><td>0</td><td>0</td><td>0</td><td><strong>0</strong></td></tr>
+              <tr><td>4</td><td class="align-left"><img class="flag-icon" src="https://i.imgur.com/oABsD5y.png"> Swiss</td><td>0</td><td>0</td><td>0</td><td>0</td><td><strong>0</strong></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="group-table-wrapper">
+          <h3 class="group-title">Grup C</h3>
+          <table class="table-klasemen">
+            <thead>
+              <tr><th>Pos</th><th class="align-left">Tim</th><th>M</th><th>S</th><th>K</th><th>SG</th><th>Pts</th></tr>
+            </thead>
+            <tbody>
+              <tr class="row-qualify"><td>1</td><td class="align-left"><img class="flag-icon" src="https://flagcdn.com/16x12/br.png"> Brasil</td><td>0</td><td>0</td><td>0</td><td>0</td><td><strong>0</strong></td></tr>
+              <tr class="row-qualify"><td>2</td><td class="align-left"><img class="flag-icon" src="https://i.imgur.com/fOFOKE0.png"> Maroko</td><td>0</td><td>0</td><td>0</td><td>0</td><td><strong>0</strong></td></tr>
+              <tr><td>3</td><td class="align-left"><img class="flag-icon" src="https://i.imgur.com/O0EVyio.png"> Haiti</td><td>0</td><td>0</td><td>0</td><td>0</td><td><strong>0</strong></td></tr>
+              <tr><td>4</td><td class="align-left"><img class="flag-icon" src="https://i.imgur.com/SuROwrg.png"> Skotlandia</td><td>0</td><td>0</td><td>0</td><td>0</td><td><strong>0</strong></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="group-table-wrapper">
+          <h3 class="group-title">Grup D</h3>
+          <table class="table-klasemen">
+            <thead>
+              <tr><th>Pos</th><th class="align-left">Tim</th><th>M</th><th>S</th><th>K</th><th>SG</th><th>Pts</th></tr>
+            </thead>
+            <tbody>
+              <tr class="row-qualify"><td>1</td><td class="align-left"><img class="flag-icon" src="https://i.imgur.com/VPfrI6m.png"> Amerika Serikat</td><td>0</td><td>0</td><td>0</td><td>0</td><td><strong>0</strong></td></tr>
+              <tr class="row-qualify"><td>2</td><td class="align-left"><img class="flag-icon" src="https://i.imgur.com/ygCArpP.png"> Paraguay</td><td>0</td><td>0</td><td>0</td><td>0</td><td><strong>0</strong></td></tr>
+              <tr><td>3</td><td class="align-left"><img class="flag-icon" src="https://flagcdn.com/16x12/au.png"> Australia</td><td>0</td><td>0</td><td>0</td><td>0</td><td><strong>0</strong></td></tr>
+              <tr><td>4</td><td class="align-left"><img class="flag-icon" src="https://i.imgur.com/jRiSeeZ.png"> Turki</td><td>0</td><td>0</td><td>0</td><td>0</td><td><strong>0</strong></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="group-table-wrapper">
+          <h3 class="group-title">Grup E</h3>
+          <table class="table-klasemen">
+            <thead>
+              <tr><th>Pos</th><th class="align-left">Tim</th><th>M</th><th>S</th><th>K</th><th>SG</th><th>Pts</th></tr>
+            </thead>
+            <tbody>
+              <tr class="row-qualify"><td>1</td><td class="align-left"><img class="flag-icon" src="https://i.imgur.com/GAVXEE3.png"> Jerman</td><td>0</td><td>0</td><td>0</td><td>0</td><td><strong>0</strong></td></tr>
+              <tr class="row-qualify"><td>2</td><td class="align-left"><img class="flag-icon" src="https://i.imgur.com/lHEYmKT.png"> Curaçao</td><td>0</td><td>0</td><td>0</td><td>0</td><td><strong>0</strong></td></tr>
+              <tr><td>3</td><td class="align-left"><img class="flag-icon" src="https://i.imgur.com/YhB38nS.png"> Pantai Gading</td><td>0</td><td>0</td><td>0</td><td>0</td><td><strong>0</strong></td></tr>
+              <tr><td>4</td><td class="align-left"><img class="flag-icon" src="https://i.imgur.com/RtWJuZH.png"> Ekuador</td><td>0</td><td>0</td><td>0</td><td>0</td><td><strong>0</strong></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="group-table-wrapper">
+          <h3 class="group-title">Grup F</h3>
+          <table class="table-klasemen">
+            <thead>
+              <tr><th>Pos</th><th class="align-left">Tim</th><th>M</th><th>S</th><th>K</th><th>SG</th><th>Pts</th></tr>
+            </thead>
+            <tbody>
+              <tr class="row-qualify"><td>1</td><td class="align-left"><img class="flag-icon" src="https://i.imgur.com/0tOvF9o.png"> Belanda</td><td>0</td><td>0</td><td>0</td><td>0</td><td><strong>0</strong></td></tr>
+              <tr class="row-qualify"><td>2</td><td class="align-left"><img class="flag-icon" src="https://i.imgur.com/9lzSYyo.png"> Jepang</td><td>0</td><td>0</td><td>0</td><td>0</td><td><strong>0</strong></td></tr>
+              <tr><td>3</td><td class="align-left"><img class="flag-icon" src="https://i.imgur.com/h719Lxs.png"> Swedia</td><td>0</td><td>0</td><td>0</td><td>0</td><td><strong>0</strong></td></tr>
+              <tr><td>4</td><td class="align-left"><img class="flag-icon" src="https://i.imgur.com/aQFMsU3.png"> Tunisia</td><td>0</td><td>0</td><td>0</td><td>0</td><td><strong>0</strong></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="group-table-wrapper">
+          <h3 class="group-title">Grup G</h3>
+          <table class="table-klasemen">
+            <thead>
+              <tr><th>Pos</th><th class="align-left">Tim</th><th>M</th><th>S</th><th>K</th><th>SG</th><th>Pts</th></tr>
+            </thead>
+            <tbody>
+              <tr class="row-qualify"><td>1</td><td class="align-left"><img class="flag-icon" src="https://i.imgur.com/nqdKCx3.png"> Belgia</td><td>0</td><td>0</td><td>0</td><td>0</td><td><strong>0</strong></td></tr>
+              <tr class="row-qualify"><td>2</td><td class="align-left"><img class="flag-icon" src="https://i.imgur.com/CcJ8V2U.png"> Mesir</td><td>0</td><td>0</td><td>0</td><td>0</td><td><strong>0</strong></td></tr>
+              <tr><td>3</td><td class="align-left"><img class="flag-icon" src="https://i.imgur.com/1tlh1VE.png"> Iran</td><td>0</td><td>0</td><td>0</td><td>0</td><td><strong>0</strong></td></tr>
+              <tr><td>4</td><td class="align-left"><img class="flag-icon" src="https://i.imgur.com/waE46bK.png"> Selandia Baru</td><td>0</td><td>0</td><td>0</td><td>0</td><td><strong>0</strong></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="group-table-wrapper">
+          <h3 class="group-title">Grup H</h3>
+          <table class="table-klasemen">
+            <thead>
+              <tr><th>Pos</th><th class="align-left">Tim</th><th>M</th><th>S</th><th>K</th><th>SG</th><th>Pts</th></tr>
+            </thead>
+            <tbody>
+              <tr class="row-qualify"><td>1</td><td class="align-left"><img class="flag-icon" src="https://i.imgur.com/3KX0SM6.png"> Spanyol</td><td>0</td><td>0</td><td>0</td><td>0</td><td><strong>0</strong></td></tr>
+              <tr class="row-qualify"><td>2</td><td class="align-left"><img class="flag-icon" src="https://i.imgur.com/goIP0bS.png"> Tanjung Verde</td><td>0</td><td>0</td><td>0</td><td>0</td><td><strong>0</strong></td></tr>
+              <tr><td>3</td><td class="align-left"><img class="flag-icon" src="https://i.imgur.com/nDyvJIB.png"> Arab Saudi</td><td>0</td><td>0</td><td>0</td><td>0</td><td><strong>0</strong></td></tr>
+              <tr><td>4</td><td class="align-left"><img class="flag-icon" src="https://i.imgur.com/V1g4qT8.png"> Uruguay</td><td>0</td><td>0</td><td>0</td><td>0</td><td><strong>0</strong></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="group-table-wrapper">
+          <h3 class="group-title">Grup I</h3>
+          <table class="table-klasemen">
+            <thead>
+              <tr><th>Pos</th><th class="align-left">Tim</th><th>M</th><th>S</th><th>K</th><th>SG</th><th>Pts</th></tr>
+            </thead>
+            <tbody>
+              <tr class="row-qualify"><td>1</td><td class="align-left"><img class="flag-icon" src="https://i.imgur.com/RyTESZ1.png"> Prancis</td><td>0</td><td>0</td><td>0</td><td>0</td><td><strong>0</strong></td></tr>
+              <tr class="row-qualify"><td>2</td><td class="align-left"><img class="flag-icon" src="https://i.imgur.com/aTkrFQL.png"> Senegal</td><td>0</td><td>0</td><td>0</td><td>0</td><td><strong>0</strong></td></tr>
+              <tr><td>3</td><td class="align-left"><img class="flag-icon" src="https://i.imgur.com/3kYhu2f.png"> Irak</td><td>0</td><td>0</td><td>0</td><td>0</td><td><strong>0</strong></td></tr>
+              <tr><td>4</td><td class="align-left"><img class="flag-icon" src="https://i.imgur.com/m9W5yvA.png"> Norwegia</td><td>0</td><td>0</td><td>0</td><td>0</td><td><strong>0</strong></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="group-table-wrapper">
+          <h3 class="group-title">Grup J</h3>
+          <table class="table-klasemen">
+            <thead>
+              <tr><th>Pos</th><th class="align-left">Tim</th><th>M</th><th>S</th><th>K</th><th>SG</th><th>Pts</th></tr>
+            </thead>
+            <tbody>
+              <tr class="row-qualify"><td>1</td><td class="align-left"><img class="flag-icon" src="https://i.imgur.com/Vtn631j.png"> Argentina</td><td>0</td><td>0</td><td>0</td><td>0</td><td><strong>0</strong></td></tr>
+              <tr class="row-qualify"><td>2</td><td class="align-left"><img class="flag-icon" src="https://i.imgur.com/XNWirnV.png"> Aljazair</td><td>0</td><td>0</td><td>0</td><td>0</td><td><strong>0</strong></td></tr>
+              <tr><td>3</td><td class="align-left"><img class="flag-icon" src="https://i.imgur.com/C9FLnVT.png"> Austria</td><td>0</td><td>0</td><td>0</td><td>0</td><td><strong>0</strong></td></tr>
+              <tr><td>4</td><td class="align-left"><img class="flag-icon" src="https://i.imgur.com/Cl4Oco8.png"> Yordania</td><td>0</td><td>0</td><td>0</td><td>0</td><td><strong>0</strong></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="group-table-wrapper">
+          <h3 class="group-title">Grup K</h3>
+          <table class="table-klasemen">
+            <thead>
+              <tr><th>Pos</th><th class="align-left">Tim</th><th>M</th><th>S</th><th>K</th><th>SG</th><th>Pts</th></tr>
+            </thead>
+            <tbody>
+              <tr class="row-qualify"><td>1</td><td class="align-left"><img class="flag-icon" src="https://i.imgur.com/Ja7kbW0.png"> Portugal</td><td>0</td><td>0</td><td>0</td><td>0</td><td><strong>0</strong></td></tr>
+              <tr class="row-qualify"><td>2</td><td class="align-left"><img class="flag-icon" src="https://i.imgur.com/2Pewhkz.png"> RD Kongo</td><td>0</td><td>0</td><td>0</td><td>0</td><td><strong>0</strong></td></tr>
+              <tr><td>3</td><td class="align-left"><img class="flag-icon" src="https://i.imgur.com/qw999vS.png"> Uzbekistan</td><td>0</td><td>0</td><td>0</td><td>0</td><td><strong>0</strong></td></tr>
+              <tr><td>4</td><td class="align-left"><img class="flag-icon" src="https://i.imgur.com/NZIBdDm.png"> Kolombia</td><td>0</td><td>0</td><td>0</td><td>0</td><td><strong>0</strong></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="group-table-wrapper">
+          <h3 class="group-title">Grup L</h3>
+          <table class="table-klasemen">
+            <thead>
+              <tr><th>Pos</th><th class="align-left">Tim</th><th>M</th><th>S</th><th>K</th><th>SG</th><th>Pts</th></tr>
+            </thead>
+            <tbody>
+              <tr class="row-qualify"><td>1</td><td class="align-left"><img class="flag-icon" src="https://i.imgur.com/9sWnNrp.png"> Inggris</td><td>0</td><td>0</td><td>0</td><td>0</td><td><strong>0</strong></td></tr>
+              <tr class="row-qualify"><td>2</td><td class="align-left"><img class="flag-icon" src="https://i.imgur.com/zvvOogC.png"> Kroasia</td><td>0</td><td>0</td><td>0</td><td>0</td><td><strong>0</strong></td></tr>
+              <tr><td>3</td><td class="align-left"><img class="flag-icon" src="https://i.imgur.com/NqwmbJg.png"> Ghana</td><td>0</td><td>0</td><td>0</td><td>0</td><td><strong>0</strong></td></tr>
+              <tr><td>4</td><td class="align-left"><img class="flag-icon" src="https://i.imgur.com/qXwTVio.png"> Panama</td><td>0</td><td>0</td><td>0</td><td>0</td><td><strong>0</strong></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+    </section>
+
+      <div class="grid-3">
+        <div class="card">
+          <div class="icon">🎁</div>
+          <h3>Bonus Langsung Masuk</h3>
+          <p>Bonus New 100% langsung didapat setelah claim. Tidak ribet, langsung bisa dipakai.</p>
+        </div>
+        <div class="card">
+          <div class="icon">⏳</div>
+          <h3>Terbatas & Cepat Habis</h3>
+          <p>Promo ini ada batas waktunya. Siapa cepat dia dapat.</p>
+        </div>
+        <div class="card">
+          <div class="icon">⚡</div>
+          <h3>Proses Cepat & Mudah</h3>
+          <p>Klik klaim, isi data, selesai. Tidak perlu proses ribet.</p>
+        </div>
+      </div>
+
+      <div class="offer-wrap">
+        <div class="offer-card">
+          <div class="tag">PROMO UTAMA</div>
+          <h4>Bonus New Member 100%</h4>
+          <ul>
+            <li>Khusus member baru</li>
+            <li>Bonus langsung masuk</li>
+            <li>Bisa langsung digunakan</li>
+            <li>Pencairan tanpa syarat</li>
+          </ul>
+        </div>
+        <div class="offer-card">
+          <div class="tag">BOOSTER EVENT</div>
+          <h4>Bonus Tambahan</h4>
+          <ul>
+            <li>Bonus Deposit</li>
+            <li>Bonus Cashback</li>
+            <li>Bonus Rollingan</li>
+            <li>Peluang dapat bonus lebih besar</li>
+          </ul>
+        </div>
+      </div>
+
+      <h2 class="section-title" id="langkah" style="margin-top:60px">Cara Ambil Bonus</h2>
+      <p class="section-sub">Ikuti langkah ini, tidak sampai 1 menit sudah selesai.</p>
+
+      <div class="steps">
+        <div class="step">
+          <div class="n">1</div>
+          <strong>Klik Klaim Sekarang</strong>
+          <span>Tekan tombol klaim di halaman ini.</span>
+        </div>
+        <div class="step">
+          <div class="n">2</div>
+          <strong>Masukkan Data</strong>
+          <span>Isi User ID dan nomor WhatsApp kamu.</span>
+        </div>
+        <div class="step">
+          <div class="n">3</div>
+          <strong>Proses Otomatis</strong>
+          <span>Data akan diproses, tidak perlu tunggu lama.</span>
+        </div>
+        <div class="step">
+          <div class="n">4</div>
+          <strong>Bonus Siap Dipakai</strong>
+          <span>Setelah claim, bonus langsung bisa digunakan.</span>
+        </div>
+      </div>
+
+      <div class="card winner-board">
+        <h3>Aktivitas Claim Terbaru</h3>
+        <p style="margin-bottom:20px; color: var(--text-muted); font-size: 14px;">History 10 ID KLAIM Terakhir.</p>
+        <table>
+          <thead>
+            <tr>
+              <th>No</th>
+              <th>User ID</th>
+              <th>Status</th>
+              <th>Bonus 100%</th>
+            </tr>
+          </thead>
+          <tbody id="winnerBody"></tbody>
+        </table>
+      </div>
+
+      <div class="cta-box">
+        <h3>Are You Ready ?</h3>
+        </p>
+        <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap">
+          <button class="btn btn-primary" id="openClaimBottom">KLAIM SEKARANG</button>
+          <a class="btn btn-soft" id="liveChatBottom" href="https://cakrabola12.info" target="_blank" rel="noopener">LIVE CHAT</a>
+          <a class="btn btn-soft" id="whatsappBottom" href="https://wa.me/6287880695321" target="_blank" rel="noopener">WHATSAPP</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div class="footer container">
+    © 2026 CAKRABOLA • FIFA WORLD CUP 2026
+  </div>
+
+  <div class="modal" id="claimModal" aria-hidden="true">
+    <div class="modal-box">
+      <h3>Klaim Bonus 100%</h3>
+      <p>Isi data singkat di bawah ini. Setelah itu user akan diarahkan ke halaman tujuan CAKRABOLA.</p>
+      <div class="field">
+        <input class="input" id="userId" type="text" placeholder="Masukkan User ID" />
+      </div>
+      <div class="field">
+        <input class="input" id="wa" type="text" placeholder="Masukkan No. WhatsApp" />
+      </div>
+      <div class="status" id="statusText"></div>
+      <div class="modal-actions">
+        <button class="btn btn-soft btn-full" id="closeModal">Batal</button>
+        <button class="btn btn-primary btn-full" id="submitClaim">Kirim Claim</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+  const CLAIM_API_URL = "https://peran-claim-worker.mahikaleverin21.workers.dev/claim";
+  const CLAIM_REDIRECT_URL = "https://cakrabola12.info/";
+  const LIVE_CHAT_URL = 'https://static.zdassets.com/web_widget/latest/liveChat.html?v=10#key=palapatoto2.zendesk.com&settings=JTdCJTIyd2ViV2lkZ2V0JTIyJTNBJTdCJTIyY2hhdCUyMiUzQSU3QiUyMnRpdGxlJTIyJTNBbnVsbCUyQyUyMm1lbnVPcHRpb25zJTIyJTNBJTdCJTIyZW1haWxUcmFuc2NyaXB0JTIyJTNBdHJ1ZSU3RCUyQyUyMmRlcGFydG1lbnRzJTIyJTNBJTdCJTdEJTJDJTIycHJlY2hhdEZvcm0lMjIlM0ElN0IlMjJkZXBhcnRtZW50TGFiZWwlMjIlM0FudWxsJTJDJTIyZ3JlZXRpbmclMjIlM0FudWxsJTdEJTJDJTIyb2ZmbGluZUZvcm0lMjIlM0ElN0IlMjJncmVldGluZyUyMiUzQW51bGwlN0QlMkMlMjJjb25jaWVyZ2UlMjIlM0ElN0IlMjJhdmF0YXJQYXRoJTIyJTNBbnVsbCUyQyUyMm5hbWUlMjIlM0FudWxsJTJDJTIydGl0bGUlMjIlM0FudWxsJTdEJTdEJTJDJTIyY29sb3IlMjIlM0ElN0IlMjJhcnRpY2xlTGlua3MlMjIlM0ElMjIlMjIlMkMlMjJidXR0b24lMjIlM0ElMjIlMjIlMkMlMjJoZWFkZXIlMjIlM0ElMjIlMjIlMkMlMjJsYXVuY2hlciUyMiUzQSUyMiUyMiUyQyUyMmxhdW5jaGVyVGV4dCUyMiUzQSUyMiUyMiUyQyUyMnJlc3VsdExpc3RzJTIyJTNBJTIyJTIyJTJDJTIydGhlbWUlMjIlM0FudWxsJTdEJTdEJTdE&&locale=en-gb&title=Web%20Widget%20Live%20Chat';
+  const WHATSAPP_URL = 'https://wa.me/6287875571212';
+  const BRAND_NAME = 'CAKRABOLA';
+  const LOGO_URL = 'https://i.imgur.com/aWwbSBy.png';
+  const PROMO_DURATION_HOURS = 12;
+
+  const endTime = Date.now() + (PROMO_DURATION_HOURS * 60 * 60 * 1000);
+  const daysEl = document.getElementById('days');
+  const hoursEl = document.getElementById('hours');
+  const minutesEl = document.getElementById('minutes');
+  const secondsEl = document.getElementById('seconds');
+  const pad = n => String(n).padStart(2, '0');
+
+  function updateCountdown() {
+    const diff = Math.max(0, endTime - Date.now());
+    const totalSeconds = Math.floor(diff / 1000);
+    const days = Math.floor(totalSeconds / 86400);
+    const hours = Math.floor((totalSeconds % 86400) / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const seconds = totalSeconds % 60;
+
+    daysEl.textContent = pad(days);
+    hoursEl.textContent = pad(hours);
+    minutesEl.textContent = pad(minutes);
+    secondsEl.textContent = pad(seconds);
+  }
+
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+
+  const sampleUsers = [
+    ['AGN****21','Berhasil','20.000'],
+    ['RZK****88','Berhasil','50.000'],
+    ['BGS****13','Berhasil','100.000'],
+    ['KYN****74','Diproses','10.000'],
+    ['LUX****09','Berhasil','25.000'],
+    ['TRX****41','Berhasil','10.000'],
+    ['MRT****26','Diproses','20.000'],
+    ['NVA****91','Berhasil','100.000'],
+    ['ABG****78','Berhasil','100.000'],
+    ['USA****99','Berhasil','100.000']
+  ];
+
+  const winnerBody = document.getElementById('winnerBody');
+  function renderTable() {
+    winnerBody.innerHTML = sampleUsers.map((item, i) => `
+      <tr>
+        <td>${i + 1}</td>
+        <td>${item[0]}</td>
+        <td><span class="pill">${item[1]}</span></td>
+        <td>${item[2]}</td>
+      </tr>
+    `).join('');
+  }
+  renderTable();
+
+  const modal = document.getElementById('claimModal');
+  const openButtons = [
+    document.getElementById('openClaimTop'),
+    document.getElementById('openClaimMain'),
+    document.getElementById('openClaimBottom')
+  ];
+  const closeModal = document.getElementById('closeModal');
+  const submitClaim = document.getElementById('submitClaim');
+  const statusText = document.getElementById('statusText');
+  const userIdInput = document.getElementById('userId');
+  const waInput = document.getElementById('wa');
+
+  function showModal() {
+    modal.classList.add('show');
+    modal.setAttribute('aria-hidden', 'false');
+    statusText.textContent = '';
+    setTimeout(() => userIdInput.focus(), 80);
+  }
+
+  function hideModal() {
+    modal.classList.remove('show');
+    modal.setAttribute('aria-hidden', 'true');
+  }
+
+  openButtons.forEach(btn => btn && btn.addEventListener('click', showModal));
+  closeModal.addEventListener('click', hideModal);
+  modal.addEventListener('click', e => {
+    if (e.target === modal) hideModal();
+  });
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && modal.classList.contains('show')) hideModal();
+  });
+
+  submitClaim.addEventListener('click', async () => {
+    const userId = userIdInput.value.trim();
+    const wa = waInput.value.trim();
+
+    if (!userId || !wa) {
+      statusText.textContent = 'Mohon isi User ID dan WhatsApp.';
+      statusText.className = 'status err';
+      return;
+    }
+
+    submitClaim.disabled = true;
+    statusText.textContent = 'Mengirim data...';
+    statusText.className = 'status';
+
+    try {
+      const res = await fetch(CLAIM_API_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ userId, wa })
+      });
+
+      const data = await res.json();
+
+      if (!data.ok) {
+        statusText.textContent = data.message || 'Gagal kirim data';
+        statusText.className = 'status err';
+        submitClaim.disabled = false;
+        return;
+      }
+
+      statusText.textContent = 'Berhasil! Mengarahkan...';
+      statusText.className = 'status ok';
+
+      setTimeout(() => {
+        window.location.href = CLAIM_REDIRECT_URL;
+      }, 1200);
+
+    } catch (err) {
+      statusText.textContent = 'Terjadi error koneksi';
+      statusText.className = 'status err';
+      submitClaim.disabled = false;
+    }
+  });
+
+  ['liveChatTop','liveChatMain','liveChatBottom'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.href = LIVE_CHAT_URL;
+  });
+
+  ['whatsappTop','whatsappMain','whatsappBottom'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.href = WHATSAPP_URL;
+  });
+  </script>
 </body>
 </html>
